@@ -6,8 +6,7 @@ import api from '../../services/api';
 import './styles.css';
 
 export default function ProductDetail(props) {
-	const id = props.match.params.id;
-	
+	const [id, setId] = useState(props.match.params.id);
 	const [nome, setNome] = useState('');
 	const [preco, setPreco] = useState(null);
 	const [descricao, setDescricao] = useState('');
@@ -27,26 +26,18 @@ export default function ProductDetail(props) {
 		;
 	}
 
-	async function handleDelete() {
-		const response = await api.delete(`/products/${id}`);
-		
-		if(response)
-			// toast.success('Música deletada com sucesso!');
-			console.log('Música deletada com sucesso!');
-		else
-			// toast.warn('Algo de errado aconteceu.. chame o desenvolvedor!');
-			console.log('Algo de errado aconteceu.. chame o desenvolvedor!');
-
-		setTimeout(() => window.location.href= '/products', 200);
+	function handleDelete() {
+		console.log('delete clicked');
 	}
 
 	useEffect(() => {
 		loadProduct();
+		console.log(imageUrl);
 	}, []);
 
     return(
 		<>
-			<button onClick={props.history.goBack}>Voltar</button>
+			<Link to='/products'>Voltar</Link>
 
 			<article>
 				<img src={imageUrl} alt={nome} />
