@@ -2,18 +2,13 @@ import React from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 
 import Products from './pages/products';
+import ProductDetail from './pages/product-detail';
 
 const Routes = () => (
     <BrowserRouter>
         <Switch>
-            <Route path="/">
-				<Products />
-			</Route>
-
-            {/* <Route path="/musics" component={Musics} />
-            <Route path="/music-add" component={MusicAdd} />
-            <Route path="/music-detail/:id" component={MusicDetail} />
-            <Route path="/music-update/:id" component={MusicUpdate} /> */}
+            <Route path='/products' component={Products} />
+			<Route path='/product-detail/:id' component={ProductDetail} />
         </Switch>
     </BrowserRouter>
 );

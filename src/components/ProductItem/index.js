@@ -3,10 +3,10 @@ import { Link } from 'react-router-dom';
 
 import './styles.css';
 
-export default function DevItem({ product }) {
+export default function ProductItem({ product }) {
     return(
         <li>
-			<Link id="detail-link" to={`/product-detail/${product.id}`}>
+			<Link id='detail-link' to={`/product-detail/${product.id}`}>
 				<img src={product.image_url} alt={product.nome}></img>
 			
 				<strong>R$ {product.preco}</strong>
