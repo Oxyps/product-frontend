@@ -59,11 +59,9 @@ export default function Products() {
 				>
 					Anterior
 				</button>
-
 				<span>
 					Page {currentPage} de {Math.ceil(countProducts / pageSize)}
 				</span>
-
 				<button
 					disabled={nextPage === null}
 					onClick={handleNextPage}
@@ -71,7 +69,7 @@ export default function Products() {
 					Próxima
 				</button>
 
-				{/* <Link to='/product-add'>Adicionar</Link> */}
+				<Link to='/product-add'>Cadastrar</Link>
 			</div>
 
 			<div>

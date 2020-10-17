@@ -11,7 +11,7 @@ export default function ProductDetail(props) {
 	const [nome, setNome] = useState('');
 	const [preco, setPreco] = useState(null);
 	const [descricao, setDescricao] = useState('');
-	const [imageUrl, setImageUrl] = useState('');
+	// const [imageUrl, setImageUrl] = useState('');
 
 	async function loadProduct() {
 		await api.get(`products/${id}`)
@@ -19,7 +19,7 @@ export default function ProductDetail(props) {
 				setNome(response.data.nome);
 				setPreco(response.data.preco);
 				setDescricao(response.data.descricao);
-				setImageUrl(response.data.image_url);
+				// setImageUrl(response.data.image_url);
 			})
 			.catch(error => {
 				console.log(error);
@@ -31,8 +31,8 @@ export default function ProductDetail(props) {
 		const response = await api.delete(`/products/${id}`);
 		
 		if(response)
-			// toast.success('Música deletada com sucesso!');
-			console.log('Música deletada com sucesso!');
+			// toast.success('Produto deletada com sucesso!');
+			console.log('Produto deletada com sucesso!');
 		else
 			// toast.warn('Algo de errado aconteceu.. chame o desenvolvedor!');
 			console.log('Algo de errado aconteceu.. chame o desenvolvedor!');
@@ -49,13 +49,13 @@ export default function ProductDetail(props) {
 			<button onClick={props.history.goBack}>Voltar</button>
 
 			<article>
-				<img src={imageUrl} alt={nome} />
+				{/* <img src={imageUrl} alt={nome} /> */}
 				<h1>Nome: {nome}</h1>
 				<strong>Preço: R$ {preco}</strong>
 				<p>Descrição: {descricao}</p>
 
 				<div>
-					<Link to={`/products-update/${id}`}>Alterar</Link>
+					<Link to={`/product-update/${id}`}>Alterar</Link>
 					<button onClick={handleDelete}>Deletar</button>
 				</div>
 			</article>

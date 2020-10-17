@@ -7,10 +7,10 @@ export default function ProductItem({ product }) {
     return(
         <li>
 			<Link id='detail-link' to={`/product-detail/${product.id}`}>
-				<img src={product.image_url} alt={product.nome}></img>
-			
-				<strong>R$ {product.preco}</strong>
+				{/* <img src={product.image_url} alt={product.nome}></img> */}
+
 				<h4>{product.nome}</h4>
+				<strong>R$ {product.preco}</strong>
 			</Link>
 			{/* <Link id="update-link" to={`/product-update/${product.id}`}>Alterar</Link>
 			<Link id="delete-link" to={`/product-delete/${product.id}`}>Deletar</Link> */}
