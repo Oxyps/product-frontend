@@ -2,17 +2,15 @@ import React from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 
 import Products from './pages/products';
-import ProductAdd from './pages/product-add';
-import ProductDetail from './pages/product-detail';
-import ProductUpdate from './pages/product-update';
+import ProductsAdd from './pages/products-add';
+import ProductsEdit from './pages/products-edit';
 
 const Routes = () => (
     <BrowserRouter>
         <Switch>
-            <Route path='/products' component={Products} />
-            <Route path='/product-add' component={ProductAdd} />
-			<Route path='/product-detail/:id' component={ProductDetail} />
-			<Route path='/product-update/:id' component={ProductUpdate} />
+            <Route path='/products/' component={Products} />
+            <Route path='/products-add/' component={ProductsAdd} />
+			<Route path='/products-edit/:id/' component={ProductsEdit} />
         </Switch>
     </BrowserRouter>
 );
