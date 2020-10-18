@@ -6,6 +6,7 @@ import ProductList from '../../components/ProductList';
 import './styles.css';
 
 export default function Products() {
+	const [pageSize, setPageSize] = useState(0);
 	const [previousPage, setPreviousPage] = useState(null);
 	const [nextPage, setNextPage] = useState(null);
 	const [currentPage, setCurrentPage] = useState(1);
@@ -28,6 +29,7 @@ export default function Products() {
 			}
 		})
 			.then(response => {
+				setPageSize(response.data.page_size);
 				setPreviousPage(response.data.prev_page);
 				setNextPage(response.data.next_page);
 				setCountProducts(response.data.count_results);
@@ -73,6 +75,8 @@ export default function Products() {
 					<ProductList
 						products={products}
 						setProducts={setProducts}
+						inPage={currentPage}
+						ofPages={Math.ceil(countProducts / pageSize)}
 					/>
 				</div>
 

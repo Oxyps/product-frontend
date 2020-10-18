@@ -6,7 +6,9 @@ import api from '../../services/api';
 
 import './styles.css';
 
-export default function ProductList({ products, setProducts }) {
+export default function ProductList({
+	products, setProducts, inPage, ofPages
+}) {
 	async function handleDeleteProduct(id) {
 		await api.delete(`/products/${id}/`)
 			.then(() => {
@@ -69,10 +71,16 @@ export default function ProductList({ products, setProducts }) {
 					))
 				) : (
 					<tr>
-						<td colSpan={3}>Nenhum produto cadastrado</td>
+						<td colSpan={4}>Nenhum produto cadastrado</td>
 					</tr>
 				)}
 			</tbody>
+
+			<tfoot>
+				<tr><td colSpan={4} className="text-center">
+					Página {inPage} de {ofPages} páginas.
+				</td></tr>
+			</tfoot>
 		</table>
     );
 }
