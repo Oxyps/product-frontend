@@ -56,7 +56,7 @@ export default function ProductList({
 							>{product.preco}</td>
 							<td>{product.descricao}</td>
 							<td>
-								<div className="flex-row vertical-center">
+								<div className="flex-row vertical-center space-between">
 									<Link
 										to={`/products-edit/${product.id}/`}
 										className="button muted-button"

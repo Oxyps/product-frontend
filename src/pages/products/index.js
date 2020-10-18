@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import IconButton from '@material-ui/core/IconButton';
+import NavigateBefore from '@material-ui/icons/NavigateBefore';
+import NavigateNext from '@material-ui/icons/NavigateNext';
 
 import api from '../../services/api';
 import ProductList from '../../components/ProductList';
@@ -46,29 +49,33 @@ export default function Products() {
 	}, [currentPage]);
 
 	return(
-		<div className="container">
+		<div className="full-container">
 			<h1 className="text-center">CRUD de Produtos</h1>
 
 			<div className="flex-row margin-bottom">
 				<div className="flex-small vertical-center">
-					<h2>{countProducts} produtos disponíveis</h2>
+					<h2>Listagem de produtos: {countProducts}</h2>
 				</div>
 				<div className="flex-small vertical-center">
 					<Link
 						to='/products-add/'
-						className='link-button'
+						className='button'
 					>Cadastrar produto</Link>
 				</div>
 			</div>
 
 			<div className="flex-row vertical-center">
 				<div className="flex-small-half margin-top">
-					<button
+					<IconButton
 						disabled={previousPage === null}
 						onClick={handlePreviousPage}
+						aria-label="next-page"
+						size="large"
+						color="primary"
+						component="span"
 					>
-						Anterior
-					</button>
+						<NavigateBefore fontSize="inherit" />
+					</IconButton>
 				</div>
 
 				<div className="flex-small">
@@ -81,12 +88,16 @@ export default function Products() {
 				</div>
 
 				<div className="flex-small-half margin-top">
-					<button
+					<IconButton
 						disabled={nextPage === null}
 						onClick={handleNextPage}
+						aria-label="next-page"
+						size="large"
+						color="primary"
+						component="span"
 					>
-						Próxima
-					</button>
+						<NavigateNext fontSize="inherit" />
+					</IconButton>
 				</div>
 			</div>
 		</div>
