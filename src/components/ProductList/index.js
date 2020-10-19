@@ -39,7 +39,7 @@ export default function ProductList({
 					<th
 						className="text-center"
 						style={{width: '8%'}}
-					>Preço (R$)</th>
+					>Preço</th>
 					<th
 						className="text-center"
 						style={{width: '45%'}}
@@ -60,7 +60,7 @@ export default function ProductList({
 							>{product.nome}</td>
 							<td
 								className="text-center"
-							>{product.preco}</td>
+							>R$ {product.preco.replace('.', ',')}</td>
 							<td
 								className="text-center"
 							>{product.descricao}</td>
