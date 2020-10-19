@@ -1,5 +1,7 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
+
+import Link from '@material-ui/core/Link';
 import IconButton from '@material-ui/core/IconButton';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -37,7 +39,7 @@ export default function ProductList({
 					<th
 						className="text-center"
 						style={{width: '8%'}}
-					>Preço</th>
+					>Preço (R$)</th>
 					<th
 						className="text-center"
 						style={{width: '45%'}}
@@ -64,7 +66,10 @@ export default function ProductList({
 							>{product.descricao}</td>
 							<td>
 								<div className="flex-row vertical-center">
-									<Link to={`/products-edit/${product.id}/`}>
+									<Link
+										component={RouterLink}
+										to={`/products-edit/${product.id}/`}
+									>
 										<IconButton
 											aria-label='edit-product'
 											size='medium'

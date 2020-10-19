@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
+
+import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
-import AddIcon from '@material-ui/icons/Add';
 import NavigateBefore from '@material-ui/icons/NavigateBefore';
 import NavigateNext from '@material-ui/icons/NavigateNext';
 
@@ -58,9 +59,14 @@ export default function Products() {
 					<h2>Listagem de produtos: {countProducts}</h2>
 				</div>
 				<div className="flex-small vertical-center">
-					<Link to='/products-add/' className='button'>
+					<Button
+						component={RouterLink}
+						to='/products-add/'
+						variant='contained'
+						color='primary'
+					>
 						Adicionar produto
-					</Link>
+					</Button>
 				</div>
 			</div>
 
