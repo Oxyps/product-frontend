@@ -28,8 +28,8 @@ export default function ProductsAdd() {
 
 				history.push('/products/');
 			})
-			.catch(error => {
-				toast.error(error);
+			.catch(() => {
+				toast.error('Não foi possível cadastrar o produto. Contate um desenvolvedor.');
 			})
 		;
 	}

@@ -17,8 +17,8 @@ export default function ProductList({
 				products = products.filter(element => element.id !== id)
 				setProducts(products)
 			})
-			.catch(error => {
-				toast.error(error);
+			.catch(() => {
+				toast.error('Não foi possível deletar o produto. Contate um desenvolvedor.');
 			})
 		;
 	}
