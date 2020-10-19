@@ -1,5 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import IconButton from '@material-ui/core/IconButton';
+import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from '@material-ui/icons/Delete';
 import { toast } from 'react-toastify';
 
 import api from '../../services/api';
@@ -37,11 +40,11 @@ export default function ProductList({
 					>Preço</th>
 					<th
 						className="text-center"
-						style={{width: '35%'}}
+						style={{width: '45%'}}
 					>Descrição</th>
 					<th
 						className="text-center"
-						style={{width: '15%'}}
+						style={{width: '10%'}}
 					>Ações</th>
 				</tr>
 			</thead>
@@ -50,21 +53,37 @@ export default function ProductList({
 				{products.length > 0 ? (
 					products.map(product => (
 						<tr key={product.id}>
-							<td>{product.nome}</td>
+							<td
+								className="text-center"
+							>{product.nome}</td>
 							<td
 								className="text-center"
 							>{product.preco}</td>
-							<td>{product.descricao}</td>
+							<td
+								className="text-center"
+							>{product.descricao}</td>
 							<td>
-								<div className="flex-row vertical-center space-between">
-									<Link
-										to={`/products-edit/${product.id}/`}
-										className="button muted-button"
-									>Editar</Link>
-									<button
+								<div className="flex-row vertical-center">
+									<Link to={`/products-edit/${product.id}/`}>
+										<IconButton
+											aria-label='edit-product'
+											size='medium'
+											color='primary'
+											component='span'
+										>
+											<EditIcon color='primary' fontSize='inherit' />
+										</IconButton>
+									</Link>
+									
+									<IconButton
 										onClick={() => handleDeleteProduct(product.id)}
-										className="button muted-button"
-									>Deletar</button>
+										aria-label='delete-product'
+										size='medium'
+										color='primary'
+										component='span'
+									>
+										<DeleteIcon fontSize='inherit' />
+									</IconButton>
 								</div>
 							</td>
 						</tr>

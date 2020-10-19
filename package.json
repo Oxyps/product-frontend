@@ -12,7 +12,6 @@
     "axios": "^0.20.0",
     "react": "^16.14.0",
     "react-dom": "^16.14.0",
-    "react-hook-form": "^6.9.2",
     "react-loader-spinner": "^3.1.14",
     "react-promise-tracker": "^2.1.0",
     "react-router-dom": "^5.2.0",

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import IconButton from '@material-ui/core/IconButton';
+import AddIcon from '@material-ui/icons/Add';
 import NavigateBefore from '@material-ui/icons/NavigateBefore';
 import NavigateNext from '@material-ui/icons/NavigateNext';
 
@@ -57,10 +58,9 @@ export default function Products() {
 					<h2>Listagem de produtos: {countProducts}</h2>
 				</div>
 				<div className="flex-small vertical-center">
-					<Link
-						to='/products-add/'
-						className='button'
-					>Cadastrar produto</Link>
+					<Link to='/products-add/' className='button'>
+						Adicionar produto
+					</Link>
 				</div>
 			</div>
 
@@ -69,8 +69,8 @@ export default function Products() {
 					<IconButton
 						disabled={previousPage === null}
 						onClick={handlePreviousPage}
-						aria-label="next-page"
-						size="large"
+						aria-label="previous-page"
+						size="medium"
 						color="primary"
 						component="span"
 					>
@@ -92,7 +92,7 @@ export default function Products() {
 						disabled={nextPage === null}
 						onClick={handleNextPage}
 						aria-label="next-page"
-						size="large"
+						size="medium"
 						color="primary"
 						component="span"
 					>

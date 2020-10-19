@@ -11,9 +11,7 @@ export default function App() {
   	return (
 	  	<>
 			<ToastContainer
-				position='top-center'
-				autoClose={3000}
-				hideProgressBar={true}
+				autoClose={5000}
 				closeOnClick
 				pauseOnFocusLoss
 				draggable
