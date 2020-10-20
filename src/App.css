@@ -1,8 +1,8 @@
 /* ------------------------------ Toasts ------------------------------ */
 .Toastify__toast {
-	width: 500px;
+	/* width: 500px; */
 	height: 100px;
-	border-radius: 15px 50px;
+	border-radius: 15px 5px 15px 50px;
 
 }
 .Toastify__toast--sccess {

@@ -6,6 +6,7 @@ import Button from '@material-ui/core/Button';
 import CurrencyTextField from '@unicef/material-ui-currency-textfield';
 
 import { useForm, Controller } from 'react-hook-form';
+import { DevTool } from '@hookform/devtools';
 
 import { toast } from 'react-toastify';
 
@@ -20,7 +21,7 @@ export default function ProductsAdd() {
 	
 	const [product, setProduct] = useState({
 		nome: '',
-		preco: '0,00',
+		preco: 0,
 		descricao: ''
 	});
 
@@ -40,7 +41,7 @@ export default function ProductsAdd() {
 				if(error.request.status === 400) {
 					toast.error(`O produto com o nome ${product.nome} já existe. Utilize outro nome.`);
 				} else {
-					toast.error('Não foi possível cadastrar o produto. Contate um desenvolvedor.');
+					toast.error('Erro não programado. Contate um desenvolvedor.');
 				}
 			})
 		;
@@ -62,6 +63,7 @@ export default function ProductsAdd() {
 				</div>
 			</div>
 
+			<DevTool control={control} />
 			<form
 				onSubmit={handleSubmit(addProduct)}
 				autoComplete="off"
@@ -94,23 +96,19 @@ export default function ProductsAdd() {
 						control={control}
 						name='preco'
 						defaultValue={product.preco}
-						render={ controllerProps => (
+						render={controllerProps => (
 							<CurrencyTextField
 								value={controllerProps.preco}
 								onChange={ e => {
+									const { value } = e.target
 									handleInputChange(
 										'preco',
-										parseFloat(e.target.value
-											.replace('.', '')
-											.replace(',', '.')
-										)
+										value.replace('.', '').replace(',', '.')
 									);
-									controllerProps.onChange(e.target.value);
+									controllerProps.onChange(value);
 								}}
-
 								error={!!errors.preco}
 								helperText={errors.preco?.message}
-
 								decimalCharacter=','
 								digitGroupSeparator='.'
 								currencySymbol='R$'
@@ -124,6 +122,11 @@ export default function ProductsAdd() {
 							maxLength: {
 								value: 10,
 								message: 'O preço precisa possuir no máximo 10 dígitos.'
+							},
+							validate: valueString => {
+								if(parseFloat(valueString.replace(',', '.')) <= 0) {
+									return 'O valor precisa ser positivo.'
+								}
 							}
 						}}
 					/>

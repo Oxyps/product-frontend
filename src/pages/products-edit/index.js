@@ -6,6 +6,7 @@ import Button from '@material-ui/core/Button';
 import CurrencyTextField from '@unicef/material-ui-currency-textfield';
 
 import { useForm, Controller } from 'react-hook-form';
+import { DevTool } from '@hookform/devtools';
 
 import { toast } from 'react-toastify';
 
@@ -19,30 +20,27 @@ export default function ProductsEdit(props) {
 		shouldFocusError: false,
 	});
 
-	const [product, setProduct] = useState({
+	const [oldProduct, setOldProduct] = useState({
 		id: props.match.params.id,
 		nome: '',
-		preco: '0,00',
+		preco: 0,
 		descricao: ''
 	});
-
-	useEffect(() => {
-		loadProduct();
-	}, [props]);
-
-	async function loadProduct() {
-		await api.get(`/products/${product.id}`)
+	const [newProduct, setNewProduct] = useState({
+		nome: '',
+		preco: 0,
+		descricao: ''
+	});
+	
+	async function loadOldProduct() {
+		await api.get(`/products/${oldProduct.id}`)
 			.then(response => {
-				setProduct(response.data);
-
-				setValue('nome', response.data.nome);
-				setValue('preco', parseFloat(response.data.preco.replace('.', ',')));
-				setValue('descricao', response.data.descricao);
+				setOldProduct(response.data);
 			})
 			.catch(error => {
 				// console.log(error.request.response);
 				if(error.request.status === 400) {
-					toast.error(`O produto com o nome ${product.nome} já existe. Utilize outro nome.`);
+					toast.error(`O produto com o nome ${newProduct.nome} já existe. Utilize outro nome.`);
 				} else {
 					toast.error('Não foi possível cadastrar o produto. Contate um desenvolvedor.');
 				}
@@ -50,26 +48,37 @@ export default function ProductsEdit(props) {
 		;
 	}
 
-	function handleInputChange(name, value) {
-		setProduct({ ...product, [name]: value });
+	useEffect(() => {
+		loadOldProduct();
+	}, [props]);
+
+	useEffect(() => {
+		// setValue('nome', oldProduct.nome);
+		// setValue('preco', oldProduct.preco.replace('.', ','));
+		// setValue('descricao', oldProduct.descricao);
+	}, [oldProduct]);
+
+	function handleNewProductChange(name, value) {
+		setNewProduct({ ...newProduct, [name]: value });
 	};
 
 	async function editProduct() {
-		await api.put(`products/${product.id}/`, product)
+		await api.put(`products/${oldProduct.id}/`, newProduct)
 			.then(() => {
 				toast.success('Produto alterado com sucesso!');
 
 				history.push('/products/');
 			})
-			.catch(() => {
-				toast.error('Não foi possível atualizar o produto. Contate um desenvolvedor.');
+			.catch(error => {
+				// console.log(error.request.response);
+				if(error.request.status === 400) {
+					toast.error(`O produto com o nome ${newProduct.nome} já existe. Utilize outro nome.`);
+				} else {
+					toast.error('Erro não programado. Contate um desenvolvedor.');
+				}
 			})
 		;
 	}
-
-	// useEffect(() => {
-	// 	console.log(product.preco.replace('.', ','));
-	// }, [product]);
 
 	return(
 		<div className="small-container">
@@ -87,6 +96,13 @@ export default function ProductsEdit(props) {
 				</div>
 			</div>
 
+			<div className="flex-small">
+				<p>Nome: {oldProduct.nome}</p>
+				<p>Preço: R$ {oldProduct.preco}</p>
+				<p>Descrição: {oldProduct.descricao}</p>
+			</div>
+
+			<DevTool control={control} />
 			<form
 				onSubmit={handleSubmit(editProduct)}
 				autoComplete="off"
@@ -103,13 +119,14 @@ export default function ProductsEdit(props) {
 						})}
 						name='nome'
 
-						defaultValue={product.nome}
-						onChange={e => handleInputChange('nome', e.target.value)}
+						defaultValue={newProduct.nome}
+						onChange={e => handleNewProductChange('nome', e.target.value)}
 
 						error={!!errors.nome}
 						helperText={errors.nome?.message}
 
 						label='Nome'
+						variant='outlined'
 						fullWidth
 					/>
 				</div>
@@ -118,31 +135,27 @@ export default function ProductsEdit(props) {
 				<Controller
 						control={control}
 						name='preco'
-						value={product.preco}
-						defaultValue={product.preco}
-						render={ controllerProps => (
+						defaultValue={newProduct.preco}
+						render={controllerProps => (
 							<CurrencyTextField
 								value={controllerProps.preco}
 								onChange={ e => {
-									handleInputChange(
+									const { value } = e.target
+									handleNewProductChange(
 										'preco',
-										parseFloat(e.target.value
-											.replace('.', '')
-											.replace(',', '.')
-										)
+										value.replace('.', '').replace(',', '.')
 									);
-									controllerProps.onChange(e.target.value);
+									controllerProps.onChange(value);
 								}}
-
 								error={!!errors.preco}
 								helperText={errors.preco?.message}
-
 								decimalCharacter=','
 								digitGroupSeparator='.'
 								currencySymbol='R$'
 								label='Preço'
 								textAlign='left'
 								fullWidth
+								variant='outlined'
 							/>
 						)}
 						rules={{
@@ -150,6 +163,11 @@ export default function ProductsEdit(props) {
 							maxLength: {
 								value: 10,
 								message: 'O preço precisa possuir no máximo 10 dígitos.'
+							},
+							validate: valueString => {
+								if(parseFloat(valueString.replace(',', '.')) <= 0) {
+									return 'O valor precisa ser positivo.'
+								}
 							}
 						}}
 					/>
@@ -166,13 +184,14 @@ export default function ProductsEdit(props) {
 						})}
 						name='descricao'
 
-						defaultValue={product.descricao}
-						onChange={e => handleInputChange('descricao', e.target.value)}
+						defaultValue={newProduct.descricao}
+						onChange={e => handleNewProductChange('descricao', e.target.value)}
 
 						error={!!errors.descricao}
 						helperText={errors.descricao?.message}
 
 						label='Descrição'
+						variant='outlined'
 						fullWidth
 					/>
 				</div>

@@ -12,15 +12,16 @@ import api from '../../services/api';
 import './styles.css';
 
 export default function ProductList({
-	products, setProducts, inPage, ofPages
+	products, setProducts, inPage, ofPages, countProducts, setCountProducts
 }) {
 	async function handleDeleteProduct(id) {
 		await api.delete(`/products/${id}/`)
 			.then(() => {
 				toast.success('Produto deletado com sucesso!');
 
-				products = products.filter(element => element.id !== id)
-				setProducts(products)
+				products = products.filter(element => element.id !== id);
+				setProducts(products);
+				setCountProducts(countProducts - 1);
 			})
 			.catch(() => {
 				toast.error('Não foi possível deletar o produto. Contate um desenvolvedor.');

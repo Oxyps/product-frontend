@@ -55,8 +55,8 @@ export default function Products() {
 			<h1 className="text-center">CRUD de Produtos</h1>
 
 			<div className="flex-row margin-bottom">
-				<div className="flex-small vertical-center">
-					<h2>Listagem de produtos: {countProducts}</h2>
+				<div className="flex-large vertical-center">
+					<h2>{countProducts} produtos disponíveis</h2>
 				</div>
 				<div className="flex-small vertical-center">
 					<Button
@@ -88,6 +88,8 @@ export default function Products() {
 					<ProductList
 						products={products}
 						setProducts={setProducts}
+						countProducts={countProducts}
+						setCountProducts={setCountProducts}
 						inPage={currentPage}
 						ofPages={Math.ceil(countProducts / pageSize)}
 					/>
