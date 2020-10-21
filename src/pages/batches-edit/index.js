@@ -3,17 +3,12 @@ import { Link as RouterLink, useHistory } from 'react-router-dom';
 
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-
 import Autocomplete from '@material-ui/lab/Autocomplete';
-
 import _ from 'lodash/fp';
-
 import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import ptBR from 'date-fns/locale/pt-BR';
 import DateFnsUtils from '@date-io/date-fns';
-
 import { useForm, Controller } from 'react-hook-form';
-
 import { toast } from 'react-toastify';
 
 import api from '../../services/api';
@@ -26,14 +21,7 @@ export default function BatchesEdit(props) {
 		shouldFocusError: false
 	});
 	
-	const [oldBatch, setOldBatch] = useState({
-		id: props.match.params.id,
-		code: '',
-		producer: '',
-		produceDate: null,
-		shelfLife: null,
-		size: ''
-	});
+	const [oldBatch, setOldBatch] = useState({});
 	const [newBatch, setNewBatch] = useState({
 		code: '',
 		producer: '',
@@ -43,7 +31,7 @@ export default function BatchesEdit(props) {
 	});
 
 	async function loadOldBatch() {
-		await api.get(`batches/${oldBatch.id}/`)
+		await api.get(`batches/${props.match.params.id}/`)
 			.then(response => {
 				setOldBatch(response.data);
 			})
@@ -108,8 +96,8 @@ export default function BatchesEdit(props) {
 			<div className="flex-small">
 				<p>Código: {oldBatch.code}</p>
 				<p>Fabricante: R$ {oldBatch.producer}</p>
-				<p>Data de fabricação: {oldBatch.produceDate}</p>
-				<p>Data de validade: {oldBatch.shelfLife}</p>
+				<p>Data de fabricação: {new Date(oldBatch.produce_date).toLocaleDateString()}</p>
+				<p>Data de validade: {new Date(oldBatch.shelf_life).toLocaleDateString()}</p>
 				<p>Tamanho: {oldBatch.size}</p>
 			</div>
 
@@ -276,5 +264,5 @@ export default function BatchesEdit(props) {
 				</div>
 			</form>
 		</div>
-	)
+	);
 }

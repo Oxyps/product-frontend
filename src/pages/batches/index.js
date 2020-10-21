@@ -51,11 +51,11 @@ export default function Batches() {
 
 	return(
 		<div className="full-container">
-			<h1 className="text-center">Página de Lotes</h1>
+			<h1 className="text-center">Listagem de Lotes</h1>
 
 			<div className="flex-row margin-bottom">
 				<div className="flex-large vertical-center">
-					<h2>{countBatches} lotes criados</h2>
+					<h2>Lotes cadastrados: {countBatches}</h2>
 				</div>
 				<div className="flex-small vertical-center">
 					<Button
@@ -74,12 +74,12 @@ export default function Batches() {
 					<IconButton
 						disabled={previousPage === null}
 						onClick={handlePreviousPage}
-						aria-label="previous-page"
-						size="medium"
-						color="primary"
-						component="span"
+						aria-label='previous-page'
+						size='medium'
+						color='primary'
+						component='span'
 					>
-						<NavigateBefore fontSize="inherit" />
+						<NavigateBefore fontSize='inherit' />
 					</IconButton>
 				</div>
 
@@ -98,15 +98,15 @@ export default function Batches() {
 					<IconButton
 						disabled={nextPage === null}
 						onClick={handleNextPage}
-						aria-label="next-page"
-						size="medium"
-						color="primary"
-						component="span"
+						aria-label='next-page'
+						size='medium'
+						color='primary'
+						component='span'
 					>
-						<NavigateNext fontSize="inherit" />
+						<NavigateNext fontSize='inherit' />
 					</IconButton>
 				</div>
 			</div>
 		</div>
-	)
+	);
 }

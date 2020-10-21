@@ -3,15 +3,10 @@ import { Link as RouterLink, useHistory } from 'react-router-dom';
 
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-
 import Autocomplete from '@material-ui/lab/Autocomplete';
-
-import _ from 'lodash/fp';
-
 import CurrencyTextField from '@unicef/material-ui-currency-textfield';
-
+import _ from 'lodash/fp';
 import { useForm, Controller } from 'react-hook-form';
-
 import { toast } from 'react-toastify';
 
 import api from '../../services/api';
@@ -212,5 +207,5 @@ export default function ProductsAdd() {
 				</div>
 			</form>
 		</div>
-	)
+	);
 }

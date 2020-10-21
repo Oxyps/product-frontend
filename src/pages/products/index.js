@@ -51,11 +51,11 @@ export default function Products() {
 
 	return(
 		<div className="full-container">
-			<h1 className="text-center">Página de Produtos</h1>
+			<h1 className="text-center">Listagem de Produtos</h1>
 
 			<div className="flex-row margin-bottom">
 				<div className="flex-large vertical-center">
-					<h2>{countProducts} produtos disponíveis</h2>
+					<h2>Produtos cadastrados: {countProducts}</h2>
 				</div>
 				<div className="flex-small vertical-center">
 					<Button
@@ -74,12 +74,12 @@ export default function Products() {
 					<IconButton
 						disabled={previousPage === null}
 						onClick={handlePreviousPage}
-						aria-label="previous-page"
-						size="medium"
-						color="primary"
-						component="span"
+						aria-label='previous-page'
+						size='medium'
+						color='primary'
+						component='span'
 					>
-						<NavigateBefore fontSize="inherit" />
+						<NavigateBefore fontSize='inherit' />
 					</IconButton>
 				</div>
 
@@ -98,15 +98,15 @@ export default function Products() {
 					<IconButton
 						disabled={nextPage === null}
 						onClick={handleNextPage}
-						aria-label="next-page"
-						size="medium"
-						color="primary"
-						component="span"
+						aria-label='next-page'
+						size='medium'
+						color='primary'
+						component='span'
 					>
-						<NavigateNext fontSize="inherit" />
+						<NavigateNext fontSize='inherit' />
 					</IconButton>
 				</div>
 			</div>
 		</div>
-	)
+	);
 }

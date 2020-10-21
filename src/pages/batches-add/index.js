@@ -3,17 +3,12 @@ import { Link as RouterLink, useHistory } from 'react-router-dom';
 
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-
 import Autocomplete from '@material-ui/lab/Autocomplete';
-
 import _ from 'lodash/fp';
-
 import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import ptBR from 'date-fns/locale/pt-BR';
 import DateFnsUtils from '@date-io/date-fns';
-
 import { useForm, Controller } from 'react-hook-form';
-
 import { toast } from 'react-toastify';
 
 import api from '../../services/api';
@@ -245,5 +240,5 @@ export default function BatchesAdd() {
 				</div>
 			</form>
 		</div>
-	)
+	);
 }
