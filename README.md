@@ -8,6 +8,7 @@
 		> yarn
 	```
 1. Enquanto as dependências são baixadas certificar-se de já estar rodando a [API](https://github.com/Oxyps/product-backend);
+1. Inserir a porta da API no arquivo `./src/services/api`.
 1. Começar a servir o cliente:
 	``` shell
 		> yarn start
@@ -17,9 +18,17 @@
 ## Rotas
 
 **Produto**
-* Listagem de produtos: `/products`;
-* Cadastro de produtos: `/products-add`;
-* Edição de produtos: `/products-edit/:id`.
+* Listagem de produtos: `/products/`;
+* Cadastro de produtos: `/products-add/`;
+* Edição de produtos: `/products-edit/:id/`;
+* Detalhe de produtos: `/products-detail/:id/`.
+
+**Lote**
+* Listagem de lotes: `/batches/`;
+* Cadastro de lotes: `/batches-add/`;
+* Edição de lotes: `/batches-edit/:id/`;
+* Detalhe de lotes: `/batches-detail/:id/`.
+
 
 ## Tecnologias utilizadas
 - [x] [React.js](https://reactjs.org/docs/getting-started.html)
