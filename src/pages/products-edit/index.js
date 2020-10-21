@@ -5,8 +5,11 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import CurrencyTextField from '@unicef/material-ui-currency-textfield';
 
+import Autocomplete from '@material-ui/lab/Autocomplete';
+
+import _ from 'lodash/fp';
+
 import { useForm, Controller } from 'react-hook-form';
-import { DevTool } from '@hookform/devtools';
 
 import { toast } from 'react-toastify';
 
@@ -15,7 +18,7 @@ import api from '../../services/api';
 export default function ProductsEdit(props) {
 	const history = useHistory();
 	
-	const { handleSubmit, register, errors, control, setValue } = useForm({
+	const { handleSubmit, register, errors, control } = useForm({
 		mode: 'onChange',
 		shouldFocusError: false,
 	});
@@ -23,27 +26,41 @@ export default function ProductsEdit(props) {
 	const [oldProduct, setOldProduct] = useState({
 		id: props.match.params.id,
 		nome: '',
-		preco: 0,
-		descricao: ''
+		preco: '0,00',
+		descricao: '',
+		batch: ''
 	});
 	const [newProduct, setNewProduct] = useState({
 		nome: '',
-		preco: 0,
-		descricao: ''
+		preco: '0,00',
+		descricao: '',
+		batch: ''
 	});
 	
+	const [batches, setBatches] = useState([]);
+
+	async function loadBatches() {
+		await api.get('batches/')
+			.then(response => {
+				setBatches(response.data.results);
+			})
+			.catch(error => {
+				console.log(error.request.response);
+			})
+		;
+	}
+
+	useEffect(() => {
+		loadBatches();
+	}, []);
+
 	async function loadOldProduct() {
-		await api.get(`/products/${oldProduct.id}`)
+		await api.get(`products/${oldProduct.id}/`)
 			.then(response => {
 				setOldProduct(response.data);
 			})
 			.catch(error => {
 				// console.log(error.request.response);
-				if(error.request.status === 400) {
-					toast.error(`O produto com o nome ${newProduct.nome} já existe. Utilize outro nome.`);
-				} else {
-					toast.error('Não foi possível cadastrar o produto. Contate um desenvolvedor.');
-				}
 			})
 		;
 	}
@@ -52,13 +69,7 @@ export default function ProductsEdit(props) {
 		loadOldProduct();
 	}, [props]);
 
-	useEffect(() => {
-		// setValue('nome', oldProduct.nome);
-		// setValue('preco', oldProduct.preco.replace('.', ','));
-		// setValue('descricao', oldProduct.descricao);
-	}, [oldProduct]);
-
-	function handleNewProductChange(name, value) {
+	function handleInputChange(name, value) {
 		setNewProduct({ ...newProduct, [name]: value });
 	};
 
@@ -70,11 +81,11 @@ export default function ProductsEdit(props) {
 				history.push('/products/');
 			})
 			.catch(error => {
-				// console.log(error.request.response);
+				console.log(error.request.response);
 				if(error.request.status === 400) {
 					toast.error(`O produto com o nome ${newProduct.nome} já existe. Utilize outro nome.`);
 				} else {
-					toast.error('Erro não programado. Contate um desenvolvedor.');
+					toast.error('Não foi possível alterar o produto. Erro não programado.');
 				}
 			})
 		;
@@ -100,31 +111,28 @@ export default function ProductsEdit(props) {
 				<p>Nome: {oldProduct.nome}</p>
 				<p>Preço: R$ {oldProduct.preco}</p>
 				<p>Descrição: {oldProduct.descricao}</p>
+				<p>Código do lote: {oldProduct.batch}</p>
 			</div>
 
-			<DevTool control={control} />
 			<form
 				onSubmit={handleSubmit(editProduct)}
 				autoComplete="off"
-				className="conainer"
+				className="container"
 			>
 				<div className="flex-large margin-bottom">
 					<TextField
 						inputRef={register({
-							required: 'O campo de nome precisa ser preenchido.',
+							required: 'Preencha o nome do produto.',
 							maxLength: {
 								value: 30,
-								message: 'O nome precisa possuir no máximo 30 letras.'
+								message: 'O nome do produto precisa possuir no máximo 30 letras.'
 							}
 						})}
 						name='nome'
-
 						defaultValue={newProduct.nome}
-						onChange={e => handleNewProductChange('nome', e.target.value)}
-
+						onChange={e => handleInputChange('nome', e.target.value)}
 						error={!!errors.nome}
 						helperText={errors.nome?.message}
-
 						label='Nome'
 						variant='outlined'
 						fullWidth
@@ -132,7 +140,7 @@ export default function ProductsEdit(props) {
 				</div>
 				
 				<div className="flex-large margin-bottom">
-				<Controller
+					<Controller
 						control={control}
 						name='preco'
 						defaultValue={newProduct.preco}
@@ -141,7 +149,7 @@ export default function ProductsEdit(props) {
 								value={controllerProps.preco}
 								onChange={ e => {
 									const { value } = e.target
-									handleNewProductChange(
+									handleInputChange(
 										'preco',
 										value.replace('.', '').replace(',', '.')
 									);
@@ -154,19 +162,19 @@ export default function ProductsEdit(props) {
 								currencySymbol='R$'
 								label='Preço'
 								textAlign='left'
-								fullWidth
 								variant='outlined'
+								fullWidth
 							/>
 						)}
 						rules={{
-							required: 'O campo de preço precisa ser preenchido.',
+							required: 'Preencha o preço do produto.',
 							maxLength: {
 								value: 10,
-								message: 'O preço precisa possuir no máximo 10 dígitos.'
+								message: 'O preço do produto precisa possuir no máximo 10 dígitos.'
 							},
 							validate: valueString => {
 								if(parseFloat(valueString.replace(',', '.')) <= 0) {
-									return 'O valor precisa ser positivo.'
+									return 'O valor do produto precisa ser positivo.'
 								}
 							}
 						}}
@@ -176,26 +184,57 @@ export default function ProductsEdit(props) {
 				<div className="flex-large margin-bottom">
 					<TextField
 						inputRef={register({
-							required: 'O campo de descrição precisa ser preenchido.',
+							required: 'Preencha uma descrição para o produto.',
 							maxLength: {
 								value: 254,
-								message: 'A descrição precisa possuir no máximo 254 letras.'
+								message: 'A descrição do produto precisa possuir no máximo 254 letras.'
 							}
 						})}
 						name='descricao'
-
 						defaultValue={newProduct.descricao}
-						onChange={e => handleNewProductChange('descricao', e.target.value)}
-
+						onChange={e => handleInputChange('descricao', e.target.value)}
 						error={!!errors.descricao}
 						helperText={errors.descricao?.message}
-
 						label='Descrição'
+						multiline
+						rows={4}
 						variant='outlined'
 						fullWidth
 					/>
 				</div>
 				
+				<div className="flex-large margin-bottom">
+					<Controller
+						name='batch'
+						control={control}
+						defaultValue={newProduct.batch}
+						rules={{ required: 'Selecione um lote para o produto.' }}
+						render={ controllerProps => (
+							<Autocomplete
+								onChange={ (_, selected) => {
+									handleInputChange('batch', selected?.code);
+									controllerProps.onChange(selected?.code);
+								}}
+								options={batches}
+								getOptionLabel={ option => option.code }
+								getOptionSelected={(option, value) => _.isEqual(option, value)}
+								renderInput={ params =>
+									<TextField
+										{...params} label='Código do lote'
+										error={!!errors.batch}
+										helperText={errors.batch?.message}
+										variant='outlined'
+										margin='normal'
+									/>
+								}
+								noOptionsText='Nenhuma opção encontrada'
+								fullWidth
+								autoComplete
+							/>
+						)}
+					/>
+				</div>
+
 				<div className="margin-top flex-row">
 					<Button type="submit" className="flex-small"
 						variant='contained'

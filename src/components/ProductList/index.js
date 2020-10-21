@@ -9,8 +9,6 @@ import { toast } from 'react-toastify';
 
 import api from '../../services/api';
 
-import './styles.css';
-
 export default function ProductList({
 	products, setProducts, inPage, ofPages, countProducts, setCountProducts
 }) {
@@ -24,7 +22,7 @@ export default function ProductList({
 				setCountProducts(countProducts - 1);
 			})
 			.catch(() => {
-				toast.error('Não foi possível deletar o produto. Contate um desenvolvedor.');
+				toast.error('Não foi possível deletar o produto. Erro não programado.');
 			})
 		;
 	}
@@ -35,16 +33,21 @@ export default function ProductList({
 				<tr>
 					<th
 						className="text-center"
-						style={{width: '17%'}}
+						style={{width: '15%'}}
 					>Nome</th>
 					<th
 						className="text-center"
-						style={{width: '8%'}}
+						style={{width: '15%'}}
 					>Preço</th>
 					<th
 						className="text-center"
-						style={{width: '45%'}}
+						style={{width: '10%'}}
+					>Lote</th>
+					<th
+						className="text-center"
+						style={{width: '35%'}}
 					>Descrição</th>
+					
 					<th
 						className="text-center"
 						style={{width: '10%'}}
@@ -56,15 +59,15 @@ export default function ProductList({
 				{products.length > 0 ? (
 					products.map(product => (
 						<tr key={product.id}>
-							<td
-								className="text-center"
-							>{product.nome}</td>
-							<td
-								className="text-center"
-							>R$ {product.preco.replace('.', ',')}</td>
-							<td
-								className="text-center"
-							>{product.descricao}</td>
+							<td className="text-center">
+								{product.nome}
+							</td>
+							<td className="text-center">
+								R$ {product.preco.replace('.', ',')}
+							</td>
+							<td className="text-center">{product.batch}</td>
+							<td className="text-center">{product.descricao}</td>
+							
 							<td>
 								<div className="flex-row vertical-center">
 									<Link
@@ -77,10 +80,13 @@ export default function ProductList({
 											color='primary'
 											component='span'
 										>
-											<EditIcon color='primary' fontSize='inherit' />
+											<EditIcon
+												color='primary'
+												fontSize='inherit'
+											/>
 										</IconButton>
 									</Link>
-									
+
 									<IconButton
 										onClick={() => handleDeleteProduct(product.id)}
 										aria-label='delete-product'
@@ -96,13 +102,13 @@ export default function ProductList({
 					))
 				) : (
 					<tr>
-						<td colSpan={4}>Nenhum produto cadastrado</td>
+						<td colSpan={5}>Nenhum produto cadastrado</td>
 					</tr>
 				)}
 			</tbody>
 
 			<tfoot>
-				<tr><td colSpan={4} className="text-center">
+				<tr><td colSpan={5} className="text-center">
 					Página {inPage} de {ofPages} páginas.
 				</td></tr>
 			</tfoot>

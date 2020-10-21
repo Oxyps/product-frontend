@@ -7,16 +7,16 @@ import NavigateBefore from '@material-ui/icons/NavigateBefore';
 import NavigateNext from '@material-ui/icons/NavigateNext';
 
 import api from '../../services/api';
-import ProductList from '../../components/ProductList';
+import BatchList from '../../components/BatchList';
 
-export default function Products() {
+export default function Batches() {
 	const [pageSize, setPageSize] = useState(0);
 	const [previousPage, setPreviousPage] = useState(null);
 	const [nextPage, setNextPage] = useState(null);
 	const [currentPage, setCurrentPage] = useState(1);
 
-	const [countProducts, setCountProducts] = useState(0);
-	const [products, setProducts] = useState([]);
+	const [countBatches, setCountBatches] = useState(0);
+	const [batches, setBatches] = useState([]);
 
 	function handlePreviousPage() {
         if(previousPage !== null) setCurrentPage(previousPage);
@@ -26,8 +26,8 @@ export default function Products() {
         if(nextPage !== null) setCurrentPage(nextPage);
     };
 
-	async function loadProducts() {
-		await api.get('products/', {
+	async function loadBatches() {
+		await api.get('batches/', {
 			params: {
 				page: currentPage
 			}
@@ -36,8 +36,8 @@ export default function Products() {
 				setPageSize(response.data.page_size);
 				setPreviousPage(response.data.prev_page);
 				setNextPage(response.data.next_page);
-				setCountProducts(response.data.count_results);
-				setProducts(response.data.results);
+				setCountBatches(response.data.count_results);
+				setBatches(response.data.results);
 			})
 			.catch(error => {
 				console.log(error);
@@ -46,25 +46,25 @@ export default function Products() {
 	}
 
 	useEffect(() => {
-		loadProducts();
+		loadBatches();
 	}, [currentPage]);
 
 	return(
 		<div className="full-container">
-			<h1 className="text-center">Página de Produtos</h1>
+			<h1 className="text-center">Página de Lotes</h1>
 
 			<div className="flex-row margin-bottom">
 				<div className="flex-large vertical-center">
-					<h2>{countProducts} produtos disponíveis</h2>
+					<h2>{countBatches} lotes criados</h2>
 				</div>
 				<div className="flex-small vertical-center">
 					<Button
 						component={RouterLink}
-						to='/products-add/'
+						to='/batches-add/'
 						variant='contained'
 						color='primary'
 					>
-						Adicionar produto
+						Adicionar Lote
 					</Button>
 				</div>
 			</div>
@@ -84,13 +84,13 @@ export default function Products() {
 				</div>
 
 				<div className="flex-small">
-					<ProductList
-						products={products}
-						setProducts={setProducts}
-						countProducts={countProducts}
-						setCountProducts={setCountProducts}
+					<BatchList
+						batches={batches}
+						setBatches={setBatches}
+						countBatches={countBatches}
+						setCountBatches={setCountBatches}
 						inPage={currentPage}
-						ofPages={Math.ceil(countProducts / pageSize)}
+						ofPages={Math.ceil(countBatches / pageSize)}
 					/>
 				</div>
 
